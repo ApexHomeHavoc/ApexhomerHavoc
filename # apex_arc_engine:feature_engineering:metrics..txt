@@ -1,0 +1,27 @@
+# apex_arc_engine/feature_engineering/metrics.py
+import pandas as pd
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
+
+def compute_metrics(data: pd.DataFrame) -> pd.DataFrame:
+    try:
+        required_columns = ["player_id", "exit_velocity", "launch_angle", "barrel_percentage"]
+        if not all(col in data.columns for col in required_columns):
+            raise ValueError("Missing required columns for feature engineering")
+        features = data.copy()
+        features["avg_exit_velocity"] = features["exit_velocity"].rolling(window=10).mean()
+        features["barrel_rate"] = features["barrel_percentage"] / 100.0
+        features["launch_angle_optimal"] = (
+            (features["launch_angle"] >= 25) & (features["launch_angle"] <= 35)
+        ).astype(int)
+        features["quantum_entropy_score"] = 0.5  # Placeholder
+        features["zeno_suppression_tag"] = 0.0   # Placeholder
+        features["ghost_tier_risk"] = 0.1        # Placeholder
+        features["sync_cluster_correlation"] = 0.3  # Placeholder
+        features = features.dropna()
+        logger.info(f"Computed features for {len(features)} records")
+        return features
+    except Exception as e:
+        logger.error(f"Feature engineering error: {e}")
+        raise

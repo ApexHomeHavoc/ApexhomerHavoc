@@ -1,0 +1,19 @@
+# apex_arc_engine/overlays/weather.py
+import pandas as pd
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
+
+def apply_weather_overlay(features: pd.DataFrame, weather_data: pd.DataFrame) -> pd.DataFrame:
+    try:
+        if weather_data.empty:
+            logger.warning("No weather data provided, returning original features")
+            return features
+        # Placeholder: Merge weather data and adjust features
+        features = features.copy()
+        features["weather_adjusted_hr_factor"] = 1.0  # Placeholder logic
+        logger.info(f"Applied weather overlay to {len(features)} records")
+        return features
+    except Exception as e:
+        logger.error(f"Weather overlay error: {e}")
+        raise

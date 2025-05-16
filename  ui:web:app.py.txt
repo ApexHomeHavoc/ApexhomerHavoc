@@ -1,0 +1,43 @@
+# File: ui/web/app.py
+import streamlit as st
+from auth.login import authenticate_user
+from parlay_optimization.risk import calculate_risk_score
+from metrics.proprietary_logic import compute_expected_value
+
+# Mock user database (replace with real DB in production)
+users_db = {
+    "testuser": {
+        "hashed_password": "$2b$12$4X9kQz3Z1Y8z7z9z7z9z7u4Qz3Z1Y8z7z9z7z9z7u4Qz3Z1Y8z7z9"  # Hashed "password"
+    }
+}
+
+def main():
+    st.title("Apex Arc - Parlay Optimization")
+    
+    if "token" not in st.session_state:
+        st.session_state.token = None
+
+    if not st.session_state.token:
+        st.subheader("Login")
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        if st.button("Login"):
+            token = authenticate_user(username, password, users_db)
+            if token:
+                st.session_state.token = token
+                st.success("Logged in successfully!")
+            else:
+                st.error("Invalid credentials")
+    else:
+        st.subheader("Parlay Optimization")
+        bet_amount = st.number_input("Bet Amount ($)", min_value=0.0, value=100.0)
+        odds = st.text_input("Enter odds (e.g., +150, -110)", "+100")
+        if st.button("Calculate"):
+            risk_score = calculate_risk_score(bet_amount, odds)
+            ev = compute_expected_value(bet_amount, odds)
+           #method compute_expected_value
+            st.write(f"Risk Score: {risk_score:.2f}")
+            st.write(f"Expected Value: ${ev:.2f}")
+
+if __name__ == "__main__":
+    main()

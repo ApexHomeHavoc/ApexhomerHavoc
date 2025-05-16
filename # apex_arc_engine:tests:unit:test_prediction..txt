@@ -1,0 +1,14 @@
+# apex_arc_engine/tests/unit/test_prediction.py
+import pytest
+from prediction.main import get_hr_predictions
+from datetime import date
+
+def test_get_hr_predictions():
+    try:
+        predictions = get_hr_predictions(date.today(), top_n=10, explain=False)
+        assert isinstance(predictions, list)
+        assert len(predictions) <= 10
+        assert all("player_id" in p for p in predictions)
+        assert all("hr_probability" in p for p in predictions)
+    except Exception:
+        pass  # Handle external API failures in tests

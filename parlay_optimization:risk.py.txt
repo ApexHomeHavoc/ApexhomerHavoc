@@ -1,0 +1,16 @@
+# File: parlay_optimization/risk.py
+def calculate_risk_score(bet_amount: float, odds: str) -> float:
+    """Calculate a risk score based on bet amount and odds."""
+    try:
+        if odds.startswith("+"):
+            decimal_odds = (int(odds[1:]) / 100) + 1
+        elif odds.startswith("-"):
+            decimal_odds = (100 / int(odds[1:])) + 1
+        else:
+            raise ValueError("Invalid odds format")
+        
+        # Simplified risk score: higher bet amount and lower odds increase risk
+        risk_score = (bet_amount / 100) * (1 / decimal_odds)
+        return risk_score
+    except Exception as e:
+        raise ValueError(f"Error calculating risk score: {str(e)}")

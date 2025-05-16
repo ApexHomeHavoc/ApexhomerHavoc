@@ -1,0 +1,10 @@
+Zeno suppression tag
+
+# metrics/zeno_tag.py
+def zeno_suppression_tag(stats):
+    """
+    stats: list of recent HR probabilities or exit velocity trends
+    Returns True if showing consistent micro-decline.
+    """
+    diffs = [j - i for i, j in zip(stats[:-1], stats[1:])]
+    return all(d < 0 and abs(d) < 0.02 for d in diffs)

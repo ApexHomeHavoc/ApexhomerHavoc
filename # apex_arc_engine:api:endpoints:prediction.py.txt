@@ -1,0 +1,46 @@
+# apex_arc_engine/api/endpoints/prediction.py
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+from datetime import date
+from typing import List
+from prediction.main import get_hr_predictions
+
+router = APIRouter(prefix="/predictions", tags=["predictions"])
+
+class PredictionRequest(BaseModel):
+    prediction_date: date
+    explain: bool = False
+
+class PredictionResponse(BaseModel):
+    player_id: str
+    hr_probability: float
+    quantum_entropy_score: float
+    zeno_suppression_tag: float
+    ghost_tier_risk: float
+    sync_cluster_correlation: float
+    explanation: dict = {}
+
+@router.post("/hr", response_model=List[PredictionResponse])
+async def predict_home_runs(request: PredictionRequest):
+    try:
+        predictions = get_hr_predictions(
+            date=request.prediction_date,
+            top_n=100,
+            explain=request.explain
+        )
+        return [
+            PredictionResponse(
+                player_id=pred["player_id"],
+                hr_probability=pred["hr_probability"],
+                quantum_entropy_score=pred.get("quantum_entropy_score", 0.0),
+                zeno_suppression_tag=pred.get("zeno_suppression_tag", 0.0),
+                ghost_tier_risk=pred.get("ghost_tier_risk", 0.0),
+                sync_cluster_correlation=pred.get("sync_cluster_correlation", 0.0),
+                explanation=pred.get("explanation", {})
+            )
+            for pred in predictions
+        ]
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error")

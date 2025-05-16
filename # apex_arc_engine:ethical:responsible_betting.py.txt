@@ -1,0 +1,15 @@
+# apex_arc_engine/ethical/responsible_betting.py
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
+
+def get_responsible_betting_prompt() -> str:
+    """
+    Return a responsible betting prompt for users.
+    """
+    prompt = (
+        "Bet responsibly. Set a budget and stick to it. "
+        "For support, visit www.gamcare.org.uk or call 0808 8020 133."
+    )
+    logger.info("Generated responsible betting prompt")
+    return prompt

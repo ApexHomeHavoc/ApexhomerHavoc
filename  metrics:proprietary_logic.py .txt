@@ -1,0 +1,18 @@
+# File: metrics/proprietary_logic.py
+def compute_expected_value(bet_amount: float, odds: str) -> float:
+    """Calculate expected value for a bet based on odds."""
+    try:
+        if odds.startswith("+"):
+            decimal_odds = (int(odds[1:]) / 100) + 1
+        elif odds.startswith("-"):
+            decimal_odds = (100 / int(odds[1:])) + 1
+        else:
+            raise ValueError("Invalid odds format")
+        
+        # Simplified EV: (Probability of win * Payout) - Bet amount
+        implied_probability = 1 / decimal_odds
+        payout = bet_amount * decimal_odds
+        ev = (implied_probability * payout) - bet_amount
+        return ev
+    except Exception as e:
+        raise ValueError(f"Error calculating expected value: {str(e)}")

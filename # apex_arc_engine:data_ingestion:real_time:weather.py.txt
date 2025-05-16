@@ -1,0 +1,26 @@
+# apex_arc_engine/data_ingestion/real_time/weather.py
+import requests
+import pandas as pd
+from datetime import date
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
+
+def fetch_weather_data(game_date: date) -> pd.DataFrame:
+    try:
+        url = f"https://api.weather.example.com/data?date={game_date}"  # Replace with real API
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        data = response.json()
+        df = pd.DataFrame(data["weather"])
+        required_columns = ["stadium_id", "wind_speed", "wind_direction", "humidity"]
+        if not all(col in df.columns for col in required_columns):
+            raise ValueError("Missing required weather columns")
+        logger.info(f"Fetched weather data for {game_date} with {len(df)} records")
+        return df
+    except requests.RequestException as e:
+        logger.error(f"Failed to fetch weather data: {e}")
+        return pd.DataFrame()
+    except ValueError as e:
+        logger.error(f"Data validation error: {e}")
+        return pd.DataFrame()
