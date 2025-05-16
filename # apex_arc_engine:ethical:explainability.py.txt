@@ -1,0 +1,29 @@
+# apex_arc_engine/ethical/explainability.py
+import shap
+import pandas as pd
+from modeling.ensemble import get_trained_model
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
+
+def explain_prediction(features: pd.DataFrame, player_id: str) -> dict:
+    try:
+        model = get_trained_model()
+        if model is None:
+            raise ValueError("No trained model available")
+        player_features = features[features["player_id"] == player_id]
+        if player_features.empty:
+            raise ValueError(f"No features found for player {player_id}")
+        explainer = shap.TreeExplainer(model)
+        shap_values = explainer.shap_values(player_features.drop(columns=["player_id"]))
+        explanation = {
+            "player_id": player_id,
+            "features": player_features.columns.tolist(),
+            "shap_values": shap_values[0].tolist(),
+            "expected_value": float(explainer.expected_value)
+        }
+        logger.info(f"Generated SHAP explanation for player {player_id}")
+        return explanation
+    except Exception as e:
+        logger.error(f"Explainability error: {e}")
+        raise

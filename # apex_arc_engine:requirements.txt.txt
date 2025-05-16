@@ -1,0 +1,11 @@
+# apex_arc_engine/requirements.txt
+fastapi==0.115.0
+pydantic==2.9.2
+pandas==2.2.3
+requests==2.32.3
+shap==0.46.0
+scikit-learn==1.5.2
+python-dotenv==1.0.1
+flake8==7.1.1
+pytest==8.3.3
+uvicorn==0.30.6

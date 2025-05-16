@@ -1,0 +1,11 @@
+Quantum entropy score
+
+# metrics/quantum_entropy.py
+import numpy as np
+
+def quantum_entropy_score(prob_vector):
+    epsilon = 1e-9
+    prob_vector = np.clip(prob_vector, epsilon, 1)
+    entropy = -np.sum(prob_vector * np.log2(prob_vector))
+    normalized = entropy / np.log2(len(prob_vector))
+    return round(normalized, 4)

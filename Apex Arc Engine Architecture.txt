@@ -1,0 +1,18 @@
+# Apex Arc Engine Architecture
+
+## Overview
+The Apex Arc Engine predicts MLB home runs using real-time data, advanced metrics, and ethical features.
+
+## Directory Structure
+- `api/`: FastAPI endpoints for predictions.
+- `data_ingestion/`: Real-time and historical data pipelines.
+- `prediction/`: Core prediction logic.
+- `modeling/`: Machine learning models.
+- `ethical/`: Explainability and responsible betting.
+
+## Data Flow
+1. Fetch data via `data_ingestion/`.
+2. Compute features in `feature_engineering/`.
+3. Apply overlays in `overlays/`.
+4. Generate predictions in `prediction/`.
+5. Serve via `api/` and display in `ui/`.

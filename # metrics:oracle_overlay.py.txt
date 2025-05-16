@@ -1,0 +1,5 @@
+Oracle overlay 
+
+# metrics/oracle_overlay.py
+def oracle_overlay_tag(model_confidence, peer_group_avg):
+    return model_confidence > 0.95 and peer_group_avg > 0.6

@@ -1,0 +1,9 @@
+# apex_arc_engine/.gitignore
+__pycache__/
+*.pyc
+config/*.env
+data/raw/
+data/processed/
+data/cache/
+*.log
+.pytest_cache/

@@ -1,0 +1,14 @@
+# apex_arc_engine/api/main.py
+from fastapi import FastAPI
+from api.endpoints.prediction import router as prediction_router
+from utils.logger import setup_logger
+
+logger = setup_logger(__name__)
+
+app = FastAPI(title="Apex Arc Engine API")
+
+app.include_router(prediction_router)
+
+@app.on_event("startup")
+async def startup_event():
+    logger.info("Apex Arc Engine API started")

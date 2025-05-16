@@ -1,0 +1,6 @@
+Ghost tier risk rating 
+
+# metrics/ghost_risk.py
+def ghost_tier_risk(volatility, matchup_entropy, weather_noise):
+    risk = 0.4 * volatility + 0.35 * matchup_entropy + 0.25 * weather_noise
+    return round(min(max(risk, 0), 1), 4)
