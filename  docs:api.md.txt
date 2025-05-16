@@ -1,0 +1,17 @@
+# File: docs/api.md
+
+# Apex Arc API Documentation
+
+## Overview
+The Apex Arc API provides endpoints for user authentication and parlay optimization.
+
+## Authentication
+### POST /auth/login
+Authenticates a user and returns a JWT token.
+
+**Request Body:**
+```json
+{
+  "username": "string",
+  "password": "string"
+}
